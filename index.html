@@ -1,171 +1,448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Noah Page - AI Security</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Noah Page - AI &amp; Security Engineer</title>
+<meta name="description" content="Noah Page - SOC and detection engineer building toward AI security. Portfolio of security tooling, detection-as-code, and LLM security projects." />
+<meta property="og:title" content="Noah Page - AI &amp; Security Engineer" />
+<meta property="og:description" content="SOC and detection engineer building toward AI security. Detection-as-code, threat triage automation, and LLM red-teaming." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #0d1117;
-    color: #e6edf3;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
+  :root{
+    --bg:#080b11;
+    --bg-2:#0d1219;
+    --surface:#111823;
+    --surface-2:#161f2c;
+    --border:#1e2a3a;
+    --text:#e6edf3;
+    --muted:#8b98a9;
+    --muted-2:#5f6c7d;
+    --accent:#2dd4bf;
+    --accent-2:#22d3ee;
+    --accent-3:#818cf8;
+    --glow:rgba(45,212,191,.35);
+    --radius:16px;
+    --maxw:1120px;
   }
-  .card {
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
   }
-  .avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #2dd4bf, #3b82f6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    margin-bottom: 16px;
-    border: 2px solid rgba(45,212,191,.3);
+  .mono{font-family:'JetBrains Mono',monospace}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* background grid + glow */
+  .bg-fx{position:fixed;inset:0;z-index:-1;overflow:hidden}
+  .bg-fx::before{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+    background-size:52px 52px;
+    mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,#000 30%,transparent 75%);
+    opacity:.35;
   }
-  h1 {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    color: #fff;
+  .bg-fx::after{
+    content:"";position:absolute;top:-20%;left:50%;transform:translateX(-50%);
+    width:900px;height:600px;
+    background:radial-gradient(circle,var(--glow),transparent 60%);
+    filter:blur(30px);opacity:.55;
   }
-  .handle {
-    font-size: 13px;
-    color: #2dd4bf;
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    margin-bottom: 10px;
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(12px);
+    background:rgba(8,11,17,.7);
+    border-bottom:1px solid var(--border);
   }
-  .bio {
-    font-size: 13px;
-    color: #8b949e;
-    text-align: center;
-    line-height: 1.6;
-    margin-bottom: 28px;
-    max-width: 340px;
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.02em}
+  .brand .dot{width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 0 12px var(--glow)}
+  .nav-links{display:flex;gap:28px;align-items:center}
+  .nav-links a{color:var(--muted);font-size:14px;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{
+    padding:8px 16px;border-radius:10px;
+    border:1px solid var(--border);
+    color:var(--text)!important;font-size:13px;font-weight:600;
+    transition:all .2s;
   }
-  .links {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .nav-cta:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,212,191,.1)}
+  @media(max-width:680px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* hero */
+  header{padding:88px 0 72px}
+  .hero{display:grid;grid-template-columns:1.4fr .9fr;gap:56px;align-items:center}
+  @media(max-width:860px){.hero{grid-template-columns:1fr;gap:40px;text-align:center}}
+  .kicker{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:22px;
+    padding:6px 14px;border:1px solid var(--border);border-radius:999px;
+    background:var(--surface);
   }
-  a.link-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 18px;
-    border-radius: 10px;
-    background: #161b22;
-    border: 1px solid #30363d;
-    color: #e6edf3;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: border-color .15s, background .15s;
+  .kicker .pulse{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  h1{
+    font-size:clamp(38px,6vw,62px);
+    line-height:1.05;font-weight:800;letter-spacing:-.02em;margin-bottom:20px;
   }
-  a.link-btn:hover {
-    border-color: #2dd4bf;
-    background: rgba(45,212,191,.06);
+  h1 .grad{background:linear-gradient(120deg,var(--accent),var(--accent-2) 55%,var(--accent-3));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{font-size:clamp(16px,2.2vw,19px);color:var(--muted);max-width:540px;margin:0 0 32px}
+  @media(max-width:860px){.lead{margin-left:auto;margin-right:auto}}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  @media(max-width:860px){.cta-row{justify-content:center}}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:13px 22px;border-radius:12px;font-size:14.5px;font-weight:600;
+    transition:all .2s;cursor:pointer;border:1px solid transparent;
   }
-  a.link-btn.primary {
-    border-color: rgba(45,212,191,.5);
-    background: rgba(45,212,191,.08);
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#052e2b;box-shadow:0 8px 24px -6px var(--glow)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px -6px var(--glow)}
+  .btn-ghost{border-color:var(--border);color:var(--text);background:var(--surface)}
+  .btn-ghost:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .btn svg{width:17px;height:17px}
+
+  /* avatar card */
+  .avatar-card{
+    position:relative;justify-self:center;
+    width:280px;max-width:100%;
+    background:linear-gradient(180deg,var(--surface),var(--bg-2));
+    border:1px solid var(--border);border-radius:24px;padding:26px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.6);
   }
-  a.link-btn.primary:hover {
-    background: rgba(45,212,191,.15);
+  .avatar-card .ring{
+    width:130px;height:130px;margin:6px auto 18px;border-radius:50%;
+    padding:4px;background:conic-gradient(from 180deg,var(--accent),var(--accent-2),var(--accent-3),var(--accent));
+    box-shadow:0 0 30px -4px var(--glow);
   }
-  .icon { font-size: 18px; width: 22px; text-align: center; }
-  .label { flex: 1; }
-  .badge {
-    font-size: 10px;
-    font-weight: 700;
-    background: #2dd4bf;
-    color: #0d1117;
-    padding: 2px 7px;
-    border-radius: 20px;
-    letter-spacing: .5px;
+  .avatar-card .ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:4px solid var(--bg-2)}
+  .avatar-card h3{text-align:center;font-size:18px;font-weight:700}
+  .avatar-card .role{text-align:center;color:var(--accent);font-size:13px;margin-bottom:18px}
+  .chips{display:flex;flex-direction:column;gap:9px}
+  .chip{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;padding:9px 13px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px}
+  .chip span:first-child{color:var(--muted)}
+  .chip span:last-child{color:var(--text);font-weight:600}
+
+  /* section shells */
+  section{padding:64px 0;position:relative}
+  .sec-head{margin-bottom:40px}
+  .sec-tag{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .sec-title{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em;margin-top:10px}
+  .sec-sub{color:var(--muted);margin-top:10px;max-width:620px}
+
+  /* stats strip */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+  .stat .num{font-size:30px;font-weight:800;background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .lbl{color:var(--muted);font-size:13px;margin-top:4px}
+
+  /* skills */
+  .skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:680px){.skill-grid{grid-template-columns:1fr}}
+  .skill-cat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+  .skill-cat h4{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .skill-cat h4 .ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--border);font-size:15px}
+  .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .tag{font-size:12.5px;padding:6px 12px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace}
+  .tag:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* filters */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
+  .filter{
+    font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;
+    background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:all .2s;
   }
-  .divider {
-    width: 100%;
-    height: 1px;
-    background: #21262d;
-    margin: 6px 0;
+  .filter:hover{color:var(--text)}
+  .filter.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#052e2b;border-color:transparent}
+
+  /* project grid */
+  .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:900px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.proj-grid{grid-template-columns:1fr}}
+  .card{
+    background:linear-gradient(180deg,var(--surface),var(--bg-2));
+    border:1px solid var(--border);border-radius:var(--radius);
+    padding:24px;display:flex;flex-direction:column;
+    transition:all .25s;position:relative;overflow:hidden;
   }
-  .footer {
-    margin-top: 28px;
-    font-size: 11px;
-    color: #484f58;
-    text-align: center;
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2));opacity:0;transition:opacity .25s}
+  .card:hover{transform:translateY(-4px);border-color:#2a3a4f;box-shadow:0 20px 40px -20px rgba(0,0,0,.7)}
+  .card:hover::before{opacity:1}
+  .card.flagship{border-color:rgba(45,212,191,.4)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+  .lang{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+  .lang .ldot{width:10px;height:10px;border-radius:50%}
+  .badge-star{font-size:11px;color:var(--accent);border:1px solid var(--border);padding:3px 9px;border-radius:999px;background:var(--surface-2);font-family:'JetBrains Mono',monospace}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:9px}
+  .card p{font-size:13.5px;color:var(--muted);flex:1;margin-bottom:16px}
+  .card-links{display:flex;gap:12px;font-size:13px;font-weight:600}
+  .card-links a{display:inline-flex;align-items:center;gap:6px;color:var(--accent);transition:opacity .2s}
+  .card-links a:hover{opacity:.7}
+  .card-links svg{width:15px;height:15px}
+
+  /* roadmap */
+  .roadmap{position:relative;padding-left:4px}
+  .road-line{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+  @media(max-width:820px){.road-line{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:460px){.road-line{grid-template-columns:1fr}}
+  .road-step{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative}
+  .road-step .yr{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted-2)}
+  .road-step .nm{font-size:14px;font-weight:700;margin-top:6px}
+  .road-step .st{font-size:11px;margin-top:8px;display:inline-block;padding:3px 9px;border-radius:999px;font-family:'JetBrains Mono',monospace}
+  .st.now{background:rgba(45,212,191,.12);color:var(--accent);border:1px solid rgba(45,212,191,.3)}
+  .st.next{background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
+  .road-step.current{border-color:rgba(45,212,191,.45);box-shadow:0 0 0 3px rgba(45,212,191,.08)}
+
+  /* contact */
+  .contact-card{
+    background:linear-gradient(135deg,var(--surface),var(--bg-2));
+    border:1px solid var(--border);border-radius:24px;padding:52px 40px;text-align:center;position:relative;overflow:hidden;
   }
+  .contact-card::before{content:"";position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(circle,var(--glow),transparent 60%);opacity:.4;filter:blur(20px)}
+  .contact-card h2{font-size:clamp(26px,4vw,36px);font-weight:800;position:relative}
+  .contact-card p{color:var(--muted);margin:14px auto 30px;max-width:460px;position:relative}
+  .contact-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+
+  footer{padding:40px 0;border-top:1px solid var(--border);margin-top:24px}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;color:var(--muted-2);font-size:13px}
+  .foot-inner a{color:var(--muted)}
+  .foot-inner a:hover{color:var(--accent)}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+  .reveal.in{opacity:1;transform:none}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="avatar">🛡️</div>
-  <h1>Noah Page</h1>
-  <div class="handle">@noahpageit</div>
-  <p class="bio">Building a one-person AI security company in public.<br>
-  LLM security audits + AI automation. Founder of Aegis.</p>
+<div class="bg-fx"></div>
 
-  <div class="links">
-
-    <a class="link-btn primary" href="https://noahpageit.github.io/aegis" target="_blank">
-      <span class="icon">🚀</span>
-      <span class="label">Aegis - AI Security Scanner</span>
-      <span class="badge">WAITLIST</span>
-    </a>
-
-    <a class="link-btn primary" href="https://demo-site-consulting.vercel.app/#contact" target="_blank">
-      <span class="icon">🔍</span>
-      <span class="label">Book a Free Discovery Call</span>
-      <span class="badge">$2,500</span>
-    </a>
-
-    <div class="divider"></div>
-
-    <a class="link-btn" href="https://youtube.com/@noahpageit" target="_blank">
-      <span class="icon">▶️</span>
-      <span class="label">YouTube - Building in Public</span>
-    </a>
-
-    <a class="link-btn" href="https://x.com/noahpageit" target="_blank">
-      <span class="icon">𝕏</span>
-      <span class="label">X / Twitter</span>
-    </a>
-
-    <a class="link-btn" href="https://linkedin.com/in/noahrpage" target="_blank">
-      <span class="icon">💼</span>
-      <span class="label">LinkedIn</span>
-    </a>
-
-    <div class="divider"></div>
-
-    <a class="link-btn" href="https://github.com/NoahPageIT/aegis" target="_blank">
-      <span class="icon">🐙</span>
-      <span class="label">Aegis on GitHub (open source)</span>
-    </a>
-
-    <a class="link-btn" href="https://github.com/NoahPageIT" target="_blank">
-      <span class="icon">📂</span>
-      <span class="label">All Projects</span>
-    </a>
-
+<nav>
+  <div class="wrap nav-inner">
+    <div class="brand"><span class="dot"></span> Noah Page</div>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact" class="nav-cta">Get in touch</a>
+    </div>
   </div>
+</nav>
 
-  <p class="footer">Ship AI safely. · noahpageit.com</p>
-</div>
+<header>
+  <div class="wrap hero">
+    <div>
+      <div class="kicker"><span class="pulse"></span> Security Engineer // AI Security</div>
+      <h1>Building secure systems<br />and <span class="grad">breaking AI</span> before attackers do.</h1>
+      <p class="lead">I am Noah, a SOC and detection engineer from the DC metro area, working toward AI security. I build detection-as-code, threat triage automation, and tools that red-team LLM applications against real-world attacks.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#projects">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 5l7 7-7 7M20 12H4"/></svg>
+          View my work
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/NoahPageIT" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+    <div class="avatar-card">
+      <div class="ring"><img src="https://avatars.githubusercontent.com/u/264541358?v=4" alt="Noah Page" /></div>
+      <h3>Noah Page</h3>
+      <div class="role">AI &amp; Security Engineer</div>
+      <div class="chips">
+        <div class="chip"><span>Location</span><span>DC Metro (DMV)</span></div>
+        <div class="chip"><span>Focus</span><span>Detection &amp; AI Security</span></div>
+        <div class="chip"><span>Public repos</span><span>24+</span></div>
+        <div class="chip"><span>Status</span><span style="color:var(--accent)">Open to work</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="stats" class="reveal">
+  <div class="wrap stats">
+    <div class="stat"><div class="num">24+</div><div class="lbl">Public projects shipped</div></div>
+    <div class="stat"><div class="num">10+</div><div class="lbl">SOC &amp; detection labs</div></div>
+    <div class="stat"><div class="num">OWASP</div><div class="lbl">LLM Top 10 red-teaming</div></div>
+    <div class="stat"><div class="num">5+</div><div class="lbl">Languages in the toolkit</div></div>
+  </div>
+</section>
+
+<section id="projects" class="reveal">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Selected work</div>
+      <div class="sec-title">Projects</div>
+      <p class="sec-sub">Hands-on security engineering: detection-as-code, threat triage automation, cloud security, and LLM red-teaming. Everything below is public on GitHub.</p>
+    </div>
+    <div class="filters" id="filters">
+      <div class="filter active" data-f="all">All</div>
+      <div class="filter" data-f="ai">AI Security</div>
+      <div class="filter" data-f="detection">Detection &amp; SOC</div>
+      <div class="filter" data-f="automation">Automation</div>
+      <div class="filter" data-f="cloud">Cloud</div>
+      <div class="filter" data-f="hunting">Threat Hunting</div>
+    </div>
+    <div class="proj-grid" id="grid"></div>
+    <div style="text-align:center;margin-top:36px">
+      <a class="btn btn-ghost" href="https://github.com/NoahPageIT?tab=repositories" target="_blank" rel="noopener">See all repositories on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="reveal">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Toolkit</div>
+      <div class="sec-title">Skills &amp; stack</div>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-cat">
+        <h4><span class="ic">&#128737;</span> Detection &amp; SOC</h4>
+        <div class="tags">
+          <span class="tag">Splunk</span><span class="tag">Sigma</span><span class="tag">MITRE ATT&amp;CK</span>
+          <span class="tag">Sentinel / KQL</span><span class="tag">SIEM</span><span class="tag">Windows Event Logs</span>
+          <span class="tag">Detection-as-Code</span><span class="tag">Wireshark</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h4><span class="ic">&#129302;</span> AI Security</h4>
+        <div class="tags">
+          <span class="tag">OWASP LLM Top 10</span><span class="tag">LLM Red-Teaming</span>
+          <span class="tag">Prompt Injection</span><span class="tag">Ollama</span><span class="tag">RAG</span>
+          <span class="tag">Agent Security</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h4><span class="ic">&#9729;</span> Cloud &amp; IaC</h4>
+        <div class="tags">
+          <span class="tag">Azure</span><span class="tag">Bicep</span><span class="tag">Defender for Cloud</span>
+          <span class="tag">Security-as-Code</span><span class="tag">AZ-500 / SC-200</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h4><span class="ic">&#128187;</span> Languages &amp; tooling</h4>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">PowerShell</span><span class="tag">JavaScript</span>
+          <span class="tag">TypeScript</span><span class="tag">Bash</span><span class="tag">Git / CI</span><span class="tag">SQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="reveal">
+  <div class="wrap">
+    <div class="contact-card">
+      <h2>Let's build something secure.</h2>
+      <p>Open to security engineering roles, AI security work, and collaboration. The fastest way to reach me is email.</p>
+      <div class="contact-row">
+        <a class="btn btn-primary" href="mailto:npage.it@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 6l8 6 8-6"/></svg>
+          npage.it@gmail.com
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/NoahPageIT" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/noahrpage/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>&copy; <span id="yr"></span> Noah Page. Built and deployed from scratch.</div>
+    <div><a href="https://github.com/NoahPageIT" target="_blank" rel="noopener">github.com/NoahPageIT</a></div>
+  </div>
+</footer>
+
+<script>
+  const projects = [
+    {name:"Aegis", cat:["ai"], lang:"JavaScript", color:"#f1e05a", flagship:true,
+     desc:"LLM Security Test Harness that red-teams LLM applications against the OWASP LLM Top 10. My flagship AI security project.",
+     url:"https://github.com/NoahPageIT/aegis"},
+    {name:"Argus SIEM", cat:["detection"], lang:"JavaScript", color:"#f1e05a",
+     desc:"SOC-analyst SIEM for Windows log monitoring, mapping activity to MITRE ATT&CK with a live detection dashboard.",
+     url:"https://github.com/NoahPageIT/argus-siem"},
+    {name:"Azure Security Lab", cat:["cloud"], lang:"Bicep", color:"#519aba",
+     desc:"Security-as-code Azure lab: hardened Bicep IaC plus Defender for Cloud and Sentinel KQL detections. AZ-500 / SC-200 aligned.",
+     url:"https://github.com/NoahPageIT/azure-security-lab"},
+    {name:"Purple Team Lab", cat:["detection"], lang:"PowerShell", color:"#012456",
+     desc:"Safe ATT&CK technique emulation on Windows paired with the Sigma/Splunk detections that catch them. Attack, detect, verify.",
+     url:"https://github.com/NoahPageIT/purple-team-lab"},
+    {name:"Sigma Detections", cat:["detection"], lang:"Python", color:"#3572A5",
+     desc:"Detection-as-code: Sigma rules for Windows Security events mapped to MITRE ATT&CK, validated in CI. Converts to Splunk / Sentinel.",
+     url:"https://github.com/NoahPageIT/sigma-detections"},
+    {name:"Threat Triage", cat:["automation"], lang:"Python", color:"#3572A5",
+     desc:"Automated IOC enrichment and alert triage for SOC analysts. Multi-source threat intel and risk scoring, zero dependencies.",
+     url:"https://github.com/NoahPageIT/threat-triage"},
+    {name:"Splunk SOC Lab", cat:["detection"], lang:"Splunk", color:"#65a637",
+     desc:"Splunk monitoring lab with Windows Security log detections (MITRE ATT&CK) and a SOC overview dashboard. Companion to Argus SIEM.",
+     url:"https://github.com/NoahPageIT/splunk-soc-lab"},
+    {name:"Threat Hunt Reports", cat:["hunting"], lang:"HTML", color:"#e34c26",
+     desc:"Threat hunt reports and writeups from the LOG(N) Pacific Cyber Range. Real hunts, documented end to end.",
+     url:"https://github.com/NoahPageIT/threat-hunt-reports"},
+    {name:"Phish Triage", cat:["automation"], lang:"Python", color:"#3572A5",
+     desc:"Phishing email triage automation: header analysis, IOC extraction, and verdict scoring to speed up analyst response.",
+     url:"https://github.com/NoahPageIT/phish-triage"},
+    {name:"Net Triage", cat:["automation"], lang:"Python", color:"#3572A5",
+     desc:"Network artifact triage tooling for rapid investigation of suspicious connections and traffic patterns.",
+     url:"https://github.com/NoahPageIT/net-triage"},
+    {name:"Vulnerability Management", cat:["hunting"], lang:"Docs", color:"#8b98a9",
+     desc:"An end-to-end vulnerability management program: scanning, prioritization, and programmatic remediation workflows.",
+     url:"https://github.com/NoahPageIT/Vulnerability-Management-Program"},
+    {name:"BEC Investigation", cat:["hunting"], lang:"Docs", color:"#8b98a9",
+     desc:"Business email compromise investigation case study: scattered invoice fraud traced through logs and evidence.",
+     url:"https://github.com/NoahPageIT/Scattered-Invoice-BEC-Investigation"}
+  ];
+
+  const grid = document.getElementById('grid');
+  function render(filter){
+    grid.innerHTML = '';
+    projects.filter(p => filter==='all' || p.cat.includes(filter)).forEach(p => {
+      const el = document.createElement('div');
+      el.className = 'card' + (p.flagship ? ' flagship' : '');
+      el.innerHTML = `
+        <div class="card-top">
+          <div class="lang"><span class="ldot" style="background:${p.color}"></span>${p.lang}</div>
+          ${p.flagship ? '<span class="badge-star">&#9733; Flagship</span>' : ''}
+        </div>
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="card-links">
+          <a href="${p.url}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
+            View code
+          </a>
+        </div>`;
+      grid.appendChild(el);
+    });
+  }
+  render('all');
+
+  document.querySelectorAll('.filter').forEach(f => {
+    f.addEventListener('click', () => {
+      document.querySelector('.filter.active').classList.remove('active');
+      f.classList.add('active');
+      render(f.dataset.f);
+    });
+  });
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
