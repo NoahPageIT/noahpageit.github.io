@@ -1,457 +1,426 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Noah Page - AI &amp; Security Engineer</title>
-<meta name="description" content="Noah Page - SOC and detection engineer building toward AI security. Portfolio of security tooling, detection-as-code, and LLM security projects." />
-<meta property="og:title" content="Noah Page - AI &amp; Security Engineer" />
-<meta property="og:description" content="SOC and detection engineer building toward AI security. Detection-as-code, threat triage automation, and LLM red-teaming." />
+<title>Noah Page // SOC & AI Security Engineer</title>
+<meta name="description" content="Noah Page - SOC and detection engineer working at the intersection of security operations and AI. Detection-as-code, threat triage automation, and LLM red-teaming." />
+<meta property="og:title" content="Noah Page // SOC & AI Security Engineer" />
+<meta property="og:description" content="Detection-as-code, threat triage automation, and LLM red-teaming against the OWASP LLM Top 10." />
 <meta property="og:type" content="website" />
+<script>document.documentElement.className='js';</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg:#080b11;
-    --bg-2:#0d1219;
-    --surface:#111823;
-    --surface-2:#161f2c;
-    --border:#1e2a3a;
-    --text:#e6edf3;
-    --muted:#8b98a9;
-    --muted-2:#5f6c7d;
-    --accent:#2dd4bf;
-    --accent-2:#22d3ee;
-    --accent-3:#818cf8;
-    --glow:rgba(45,212,191,.35);
-    --radius:16px;
-    --maxw:1120px;
+    --bg:#0b0a08;
+    --panel:#100e0b;
+    --panel-2:#161310;
+    --line:#272219;
+    --line-2:#3b342a;
+    --ink:#ece5d6;
+    --ink-dim:#9a9080;
+    --dim:#6a6255;
+    --amber:#f2a52c;
+    --amber-2:#f5bd63;
+    --green:#9ac862;
+    --red:#e6605f;
+    --blue:#77b0cf;
+    --mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+    --disp:'Space Grotesk',system-ui,sans-serif;
+    --maxw:1040px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
-    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    font-family:var(--mono);
     background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-    overflow-x:hidden;
+    color:var(--ink);
+    font-size:14.5px;line-height:1.65;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
-  .mono{font-family:'JetBrains Mono',monospace}
+  /* faint scanline texture - the CRT tell, kept barely-there */
+  body::after{
+    content:"";position:fixed;inset:0;z-index:9;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,0),rgba(0,0,0,0) 2px,rgba(0,0,0,.13) 3px,rgba(0,0,0,0) 4px);
+    opacity:.35;mix-blend-mode:multiply;
+  }
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  ::selection{background:rgba(242,165,44,.28);color:#fff}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+  .amber{color:var(--amber)}
+  .green{color:var(--green)}
+  .red{color:var(--red)}
+  .dim{color:var(--ink-dim)}
 
-  /* background grid + glow */
-  .bg-fx{position:fixed;inset:0;z-index:-1;overflow:hidden}
-  .bg-fx::before{
-    content:"";position:absolute;inset:0;
-    background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
-    background-size:52px 52px;
-    mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,#000 30%,transparent 75%);
-    opacity:.35;
+  /* ── top status bar ── */
+  .bar{
+    position:sticky;top:0;z-index:40;
+    background:rgba(11,10,8,.92);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    font-size:12.5px;
   }
-  .bg-fx::after{
-    content:"";position:absolute;top:-20%;left:50%;transform:translateX(-50%);
-    width:900px;height:600px;
-    background:radial-gradient(circle,var(--glow),transparent 60%);
-    filter:blur(30px);opacity:.55;
+  .bar-in{display:flex;align-items:center;justify-content:space-between;height:46px;max-width:var(--maxw);margin:0 auto;padding:0 26px}
+  .bar-l{display:flex;align-items:center;gap:9px;color:var(--ink-dim)}
+  .led{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  .bar-l b{color:var(--ink);font-weight:600}
+  .bar-nav{display:flex;gap:4px}
+  .bar-nav a{color:var(--ink-dim);padding:4px 9px;border:1px solid transparent;transition:.15s}
+  .bar-nav a:hover{color:var(--amber);border-color:var(--line-2)}
+  .bar-nav a::before{content:"";color:var(--dim)}
+  @media(max-width:640px){.bar-nav a[data-sec]{display:none}}
+
+  /* ── section header: §NN  name ──────────── meta ── */
+  .sec{padding:66px 0 8px}
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:30px}
+  .sec-head .idx{font-size:12px;color:var(--amber);font-weight:600;letter-spacing:.05em}
+  .sec-head h2{font-family:var(--disp);font-size:20px;font-weight:600;letter-spacing:.01em;white-space:nowrap}
+  .sec-head h2::before{content:"# ";color:var(--dim)}
+  .sec-head .rule{flex:1;height:1px;background:repeating-linear-gradient(90deg,var(--line-2),var(--line-2) 4px,transparent 4px,transparent 8px)}
+  .sec-head .meta{font-size:12px;color:var(--dim);white-space:nowrap}
+
+  /* ── hero ── */
+  header{padding:60px 0 8px;position:relative}
+  .banner{margin-bottom:34px}
+  .banner .tagline{font-size:12.5px;color:var(--amber);letter-spacing:.16em;text-transform:uppercase}
+  .banner h1{font-family:var(--disp);font-weight:700;font-size:clamp(40px,8vw,74px);line-height:.98;letter-spacing:-.01em;margin:12px 0 14px}
+  .banner .role{font-size:clamp(14px,2.4vw,17px);color:var(--ink-dim);max-width:640px}
+  .banner .role b{color:var(--ink);font-weight:600}
+
+  .hero-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:24px;align-items:start}
+  @media(max-width:800px){.hero-grid{grid-template-columns:1fr}}
+
+  /* terminal window */
+  .term{border:1px solid var(--line-2);background:var(--panel);position:relative}
+  .term-bar{display:flex;align-items:center;gap:14px;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--panel-2);font-size:12px;color:var(--dim)}
+  .dots{display:flex;gap:6px}
+  .dots i{width:10px;height:10px;border-radius:50%;display:block}
+  .dots i:nth-child(1){background:#e6605f}.dots i:nth-child(2){background:#f2a52c}.dots i:nth-child(3){background:#9ac862}
+  .term-body{padding:18px 18px 20px;font-size:13.5px;line-height:1.75}
+  .term-body .ln{display:block}
+  .term-body .pr{color:var(--green)}
+  .term-body .pr b{color:var(--blue);font-weight:400}
+  .term-body .out{color:var(--ink);padding-left:2px}
+  .term-body .out.d{color:var(--ink-dim)}
+  .cursor{display:inline-block;width:8px;height:16px;background:var(--amber);vertical-align:-2px;margin-left:2px;animation:blink 1.05s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .js .type .ln{opacity:0;transform:translateY(3px);animation:typein .28s ease forwards}
+  @keyframes typein{to{opacity:1;transform:none}}
+
+  /* id dossier card */
+  .id{border:1px solid var(--line-2);background:var(--panel);padding:16px;position:relative}
+  .id::before,.id::after{content:"";position:absolute;width:9px;height:9px;border-color:var(--amber);border-style:solid}
+  .id::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
+  .id::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
+  .id-top{display:flex;gap:13px;align-items:center;margin-bottom:15px}
+  .id-photo{width:60px;height:60px;object-fit:cover;border:1px solid var(--line-2);filter:grayscale(.25) contrast(1.05)}
+  .id-top .who b{font-family:var(--disp);font-size:16px;font-weight:600;display:block}
+  .id-top .who span{font-size:12px;color:var(--amber)}
+  .id-row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:5px 0;border-top:1px dashed var(--line)}
+  .id-row .k{color:var(--dim)}
+  .id-row .v{color:var(--ink)}
+  .id-row .v.ok{color:var(--green)}
+
+  /* ── metrics strip ── */
+  .metrics{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .metric{border:1px solid var(--line);background:var(--panel);padding:11px 16px;flex:1;min-width:150px}
+  .metric b{font-family:var(--disp);font-size:23px;color:var(--amber);display:block;line-height:1}
+  .metric span{font-size:12px;color:var(--ink-dim)}
+  .metric::before{content:"› ";color:var(--dim)}
+
+  /* ── project listing (filesystem style) ── */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;font-size:12.5px}
+  .filters .lbl{color:var(--dim);padding:5px 0;margin-right:2px}
+  .filter{cursor:pointer;padding:5px 11px;border:1px solid var(--line);color:var(--ink-dim);transition:.14s;user-select:none}
+  .filter:hover{color:var(--ink);border-color:var(--line-2)}
+  .filter.active{color:var(--bg);background:var(--amber);border-color:var(--amber);font-weight:600}
+  .filter::before{content:"["}.filter::after{content:"]"}
+  .filter::before,.filter::after{color:inherit;opacity:.5}
+
+  .listing{border:1px solid var(--line);background:var(--panel)}
+  .row{display:grid;grid-template-columns:104px 1fr 150px 30px;gap:14px;align-items:center;
+    padding:13px 16px;border-bottom:1px solid var(--line);transition:.13s;position:relative}
+  .row:last-child{border-bottom:none}
+  .row:hover{background:var(--panel-2)}
+  .row:hover .r-go{color:var(--amber);transform:translateX(3px)}
+  .row:hover .r-name{color:var(--amber)}
+  .r-flag{font-size:10.5px;letter-spacing:.05em}
+  .r-flag .fl{color:var(--amber);border:1px solid var(--amber);padding:2px 6px}
+  .r-flag .dr{color:var(--dim)}
+  .r-name{font-weight:600;font-size:14.5px;transition:.13s}
+  .r-name::before{content:"› ";color:var(--dim);font-weight:400}
+  .r-desc{color:var(--ink-dim);font-size:12.8px;line-height:1.5}
+  .r-lang{font-size:12px;color:var(--dim);display:flex;align-items:center;gap:7px;justify-content:flex-end}
+  .r-lang i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .r-go{text-align:right;color:var(--dim);transition:.13s;font-size:16px}
+  @media(max-width:720px){
+    .row{grid-template-columns:1fr auto;gap:5px 12px;padding:14px 15px}
+    .r-flag{grid-column:1/2;grid-row:1}
+    .r-name{grid-column:1/2;grid-row:2}
+    .r-lang{grid-column:2;grid-row:1/3;align-self:center}
+    .r-desc{grid-column:1/3;grid-row:3;margin-top:3px}
+    .r-go{display:none}
   }
+  .listing-foot{padding:12px 16px;font-size:12.5px;color:var(--dim);border-top:1px solid var(--line)}
+  .listing-foot a{color:var(--amber)}
+  .listing-foot a:hover{text-decoration:underline}
 
-  /* nav */
-  nav{
-    position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(12px);
-    background:rgba(8,11,17,.7);
-    border-bottom:1px solid var(--border);
-  }
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.02em}
-  .brand .dot{width:10px;height:10px;border-radius:3px;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 0 12px var(--glow)}
-  .nav-links{display:flex;gap:28px;align-items:center}
-  .nav-links a{color:var(--muted);font-size:14px;font-weight:500;transition:color .2s}
-  .nav-links a:hover{color:var(--text)}
-  .nav-cta{
-    padding:8px 16px;border-radius:10px;
-    border:1px solid var(--border);
-    color:var(--text)!important;font-size:13px;font-weight:600;
-    transition:all .2s;
-  }
-  .nav-cta:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,212,191,.1)}
-  @media(max-width:680px){.nav-links a:not(.nav-cta){display:none}}
+  /* ── skills as config blocks ── */
+  .cfg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.cfg{grid-template-columns:1fr}}
+  .cfg-block{border:1px solid var(--line);background:var(--panel);padding:16px 18px}
+  .cfg-block h4{font-size:12.5px;color:var(--amber);margin-bottom:12px;font-weight:600}
+  .cfg-block h4::before{content:"[ "}.cfg-block h4::after{content:" ]"}
+  .cfg-block h4::before,.cfg-block h4::after{color:var(--dim)}
+  .kv{display:flex;flex-wrap:wrap;gap:7px}
+  .kv span{font-size:12px;color:var(--ink-dim);padding:3px 9px;border:1px solid var(--line);transition:.14s}
+  .kv span:hover{color:var(--amber);border-color:var(--line-2)}
 
-  /* hero */
-  header{padding:88px 0 72px}
-  .hero{display:grid;grid-template-columns:1.4fr .9fr;gap:56px;align-items:center}
-  @media(max-width:860px){.hero{grid-template-columns:1fr;gap:40px;text-align:center}}
-  .kicker{
-    display:inline-flex;align-items:center;gap:10px;
-    font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--accent);margin-bottom:22px;
-    padding:6px 14px;border:1px solid var(--border);border-radius:999px;
-    background:var(--surface);
-  }
-  .kicker .pulse{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-  h1{
-    font-size:clamp(38px,6vw,62px);
-    line-height:1.05;font-weight:800;letter-spacing:-.02em;margin-bottom:20px;
-  }
-  h1 .grad{background:linear-gradient(120deg,var(--accent),var(--accent-2) 55%,var(--accent-3));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .lead{font-size:clamp(16px,2.2vw,19px);color:var(--muted);max-width:540px;margin:0 0 32px}
-  @media(max-width:860px){.lead{margin-left:auto;margin-right:auto}}
-  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
-  @media(max-width:860px){.cta-row{justify-content:center}}
-  .btn{
-    display:inline-flex;align-items:center;gap:9px;
-    padding:13px 22px;border-radius:12px;font-size:14.5px;font-weight:600;
-    transition:all .2s;cursor:pointer;border:1px solid transparent;
-  }
-  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#052e2b;box-shadow:0 8px 24px -6px var(--glow)}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px -6px var(--glow)}
-  .btn-ghost{border-color:var(--border);color:var(--text);background:var(--surface)}
-  .btn-ghost:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .btn svg{width:17px;height:17px}
+  /* ── models table ── */
+  .mtable{border:1px solid var(--line);background:var(--panel)}
+  .mrow{display:grid;grid-template-columns:150px 1fr 175px;gap:14px;padding:14px 16px;border-bottom:1px solid var(--line);align-items:baseline}
+  .mrow:last-child{border-bottom:none}
+  .mrow .mp{font-family:var(--disp);font-weight:600;font-size:14.5px}
+  .mrow .mp small{display:block;font-family:var(--mono);font-weight:400;font-size:11.5px;color:var(--amber);margin-top:2px}
+  .mrow .md{font-size:12.6px;color:var(--ink-dim)}
+  .mrow .mt{font-size:11px;color:var(--green);text-align:right;letter-spacing:.03em}
+  .mrow .mt::before{content:"● "}
+  @media(max-width:680px){.mrow{grid-template-columns:1fr;gap:5px}.mrow .mt{text-align:left}}
 
-  /* avatar card */
-  .avatar-card{
-    position:relative;justify-self:center;
-    width:280px;max-width:100%;
-    background:linear-gradient(180deg,var(--surface),var(--bg-2));
-    border:1px solid var(--border);border-radius:24px;padding:26px;
-    box-shadow:0 30px 60px -20px rgba(0,0,0,.6);
-  }
-  .avatar-card .ring{
-    width:130px;height:130px;margin:6px auto 18px;border-radius:50%;
-    padding:4px;background:conic-gradient(from 180deg,var(--accent),var(--accent-2),var(--accent-3),var(--accent));
-    box-shadow:0 0 30px -4px var(--glow);
-  }
-  .avatar-card .ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:4px solid var(--bg-2)}
-  .avatar-card h3{text-align:center;font-size:18px;font-weight:700}
-  .avatar-card .role{text-align:center;color:var(--accent);font-size:13px;margin-bottom:18px}
-  .chips{display:flex;flex-direction:column;gap:9px}
-  .chip{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;padding:9px 13px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px}
-  .chip span:first-child{color:var(--muted)}
-  .chip span:last-child{color:var(--text);font-weight:600}
+  /* proof terminal */
+  .proof{margin-top:16px;border:1px solid var(--line-2);background:var(--panel);font-size:12.8px}
+  .proof .term-bar{font-size:11.5px}
+  .proof-body{padding:14px 16px;line-height:1.7}
+  .proof-body .cmd{color:var(--green)}
+  .proof-body .cmd b{color:var(--blue);font-weight:400}
+  .proof-body .l{display:flex;justify-content:space-between;color:var(--ink-dim);gap:12px}
+  .proof-body .l .t{color:var(--dim)}
+  .proof-body .fail{color:var(--red);font-weight:600}
+  .proof-body .pass{color:var(--green)}
+  .proof-body .score{border-top:1px solid var(--line);margin-top:8px;padding-top:8px;color:var(--ink)}
+  .proof-body .score b{color:var(--amber);font-family:var(--disp)}
 
-  /* section shells */
-  section{padding:64px 0;position:relative}
-  .sec-head{margin-bottom:40px}
-  .sec-tag{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
-  .sec-title{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em;margin-top:10px}
-  .sec-sub{color:var(--muted);margin-top:10px;max-width:620px}
+  /* ── contact ── */
+  .contact{border:1px solid var(--line-2);background:var(--panel);padding:26px}
+  .contact .cmd{color:var(--green);font-size:13.5px;margin-bottom:16px}
+  .contact .cmd b{color:var(--blue);font-weight:400}
+  .clist{display:flex;flex-direction:column}
+  .clist a{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:center;padding:12px 4px;border-top:1px dashed var(--line);transition:.14s}
+  .clist a:hover{color:var(--amber);padding-left:12px}
+  .clist a .ck{color:var(--dim);font-size:12.5px}
+  .clist a .cv{font-size:13.5px}
+  .clist a .cgo{color:var(--dim);font-size:15px}
+  .clist a:hover .cgo{color:var(--amber)}
+  @media(max-width:520px){.clist a{grid-template-columns:90px 1fr}.clist a .cgo{display:none}}
 
-  /* stats strip */
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-  @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)}}
-  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
-  .stat .num{font-size:30px;font-weight:800;background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .stat .lbl{color:var(--muted);font-size:13px;margin-top:4px}
+  /* ── footer status line ── */
+  footer{margin-top:64px;border-top:1px solid var(--line-2)}
+  .status{max-width:var(--maxw);margin:0 auto;padding:11px 26px;display:flex;justify-content:space-between;
+    flex-wrap:wrap;gap:10px;font-size:12px;color:var(--dim)}
+  .status .mode{background:var(--amber);color:var(--bg);font-weight:700;padding:1px 9px;letter-spacing:.05em}
+  .status a:hover{color:var(--amber)}
 
-  /* skills */
-  .skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-  @media(max-width:680px){.skill-grid{grid-template-columns:1fr}}
-  .skill-cat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
-  .skill-cat h4{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-  .skill-cat h4 .ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--border);font-size:15px}
-  .tags{display:flex;flex-wrap:wrap;gap:8px}
-  .tag{font-size:12.5px;padding:6px 12px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace}
-  .tag:hover{color:var(--accent);border-color:var(--accent)}
-
-  /* models */
-  .model-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-  @media(max-width:820px){.model-grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:460px){.model-grid{grid-template-columns:1fr}}
-  .model-card{background:linear-gradient(180deg,var(--surface),var(--bg-2));border:1px solid var(--border);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;transition:all .25s}
-  .model-card:hover{transform:translateY(-4px);border-color:#2a3a4f;box-shadow:0 18px 36px -20px rgba(0,0,0,.7)}
-  .model-card .mhead{display:flex;align-items:center;gap:11px;margin-bottom:14px}
-  .model-card .mlogo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:15px;font-family:'JetBrains Mono',monospace;background:var(--surface-2);border:1px solid var(--border);color:var(--accent)}
-  .model-card .prov{font-size:15px;font-weight:700;line-height:1.2}
-  .model-card .mdls{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);margin-bottom:11px}
-  .model-card p{font-size:12.8px;color:var(--muted);flex:1;margin-bottom:14px}
-  .model-card .role{align-self:flex-start;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.28);color:var(--accent)}
-
-  /* filters */
-  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
-  .filter{
-    font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;
-    background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:all .2s;
-  }
-  .filter:hover{color:var(--text)}
-  .filter.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#052e2b;border-color:transparent}
-
-  /* project grid */
-  .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  @media(max-width:900px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:620px){.proj-grid{grid-template-columns:1fr}}
-  .card{
-    background:linear-gradient(180deg,var(--surface),var(--bg-2));
-    border:1px solid var(--border);border-radius:var(--radius);
-    padding:24px;display:flex;flex-direction:column;
-    transition:all .25s;position:relative;overflow:hidden;
-  }
-  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2));opacity:0;transition:opacity .25s}
-  .card:hover{transform:translateY(-4px);border-color:#2a3a4f;box-shadow:0 20px 40px -20px rgba(0,0,0,.7)}
-  .card:hover::before{opacity:1}
-  .card.flagship{border-color:rgba(45,212,191,.4)}
-  .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
-  .lang{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace}
-  .lang .ldot{width:10px;height:10px;border-radius:50%}
-  .badge-star{font-size:11px;color:var(--accent);border:1px solid var(--border);padding:3px 9px;border-radius:999px;background:var(--surface-2);font-family:'JetBrains Mono',monospace}
-  .card h3{font-size:17px;font-weight:700;margin-bottom:9px}
-  .card p{font-size:13.5px;color:var(--muted);flex:1;margin-bottom:16px}
-  .card-links{display:flex;gap:12px;font-size:13px;font-weight:600}
-  .card-links a{display:inline-flex;align-items:center;gap:6px;color:var(--accent);transition:opacity .2s}
-  .card-links a:hover{opacity:.7}
-  .card-links svg{width:15px;height:15px}
-
-  /* roadmap */
-  .roadmap{position:relative;padding-left:4px}
-  .road-line{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-  @media(max-width:820px){.road-line{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:460px){.road-line{grid-template-columns:1fr}}
-  .road-step{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative}
-  .road-step .yr{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted-2)}
-  .road-step .nm{font-size:14px;font-weight:700;margin-top:6px}
-  .road-step .st{font-size:11px;margin-top:8px;display:inline-block;padding:3px 9px;border-radius:999px;font-family:'JetBrains Mono',monospace}
-  .st.now{background:rgba(45,212,191,.12);color:var(--accent);border:1px solid rgba(45,212,191,.3)}
-  .st.next{background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
-  .road-step.current{border-color:rgba(45,212,191,.45);box-shadow:0 0 0 3px rgba(45,212,191,.08)}
-
-  /* contact */
-  .contact-card{
-    background:linear-gradient(135deg,var(--surface),var(--bg-2));
-    border:1px solid var(--border);border-radius:24px;padding:52px 40px;text-align:center;position:relative;overflow:hidden;
-  }
-  .contact-card::before{content:"";position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(circle,var(--glow),transparent 60%);opacity:.4;filter:blur(20px)}
-  .contact-card h2{font-size:clamp(26px,4vw,36px);font-weight:800;position:relative}
-  .contact-card p{color:var(--muted);margin:14px auto 30px;max-width:460px;position:relative}
-  .contact-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
-
-  footer{padding:40px 0;border-top:1px solid var(--border);margin-top:24px}
-  .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;color:var(--muted-2);font-size:13px}
-  .foot-inner a{color:var(--muted)}
-  .foot-inner a:hover{color:var(--accent)}
-
-  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}
+  .reveal{opacity:0;transform:translateY(18px)}
+  .js .reveal{transition:opacity .55s ease,transform .55s ease}
   .reveal.in{opacity:1;transform:none}
+  .no-js .reveal{opacity:1;transform:none}
 </style>
 </head>
 <body>
-<div class="bg-fx"></div>
 
-<nav>
-  <div class="wrap nav-inner">
-    <div class="brand"><span class="dot"></span> Noah Page</div>
-    <div class="nav-links">
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#models">Models</a>
-      <a href="#contact" class="nav-cta">Get in touch</a>
-    </div>
+<!-- ═══ status bar ═══ -->
+<div class="bar">
+  <div class="bar-in">
+    <div class="bar-l"><span class="led"></span><b>noah_page</b><span class="dim">:~/portfolio</span></div>
+    <nav class="bar-nav">
+      <a href="#work" data-sec>./work</a>
+      <a href="#stack" data-sec>./stack</a>
+      <a href="#models" data-sec>./models</a>
+      <a href="#contact">./contact</a>
+    </nav>
   </div>
-</nav>
+</div>
 
 <header>
-  <div class="wrap hero">
-    <div>
-      <div class="kicker"><span class="pulse"></span> Security Engineer // AI Security</div>
-      <h1>Building secure systems<br />and <span class="grad">breaking AI</span> before attackers do.</h1>
-      <p class="lead">SOC and detection engineer in the DC metro area, working at the intersection of security operations and AI. I write detection-as-code, automate threat triage, and build tools that red-team LLM applications against the OWASP LLM Top 10 and real-world attacks.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#projects">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 5l7 7-7 7M20 12H4"/></svg>
-          View my work
-        </a>
-        <a class="btn btn-ghost" href="https://github.com/NoahPageIT" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
-          GitHub
-        </a>
+  <div class="wrap">
+    <div class="banner reveal">
+      <div class="tagline">SOC &amp; Detection Engineer // AI Security</div>
+      <h1>NOAH&nbsp;PAGE</h1>
+      <p class="role">Working at the intersection of <b>security operations</b> and <b>AI</b>. I write detection-as-code, automate threat triage, and build tools that red-team LLM applications against the OWASP LLM Top&nbsp;10 and real-world attacks.</p>
+    </div>
+
+    <div class="hero-grid reveal">
+      <div class="term">
+        <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span>noah@dmv: ~/whoami — zsh</span></div>
+        <div class="term-body type">
+          <span class="ln"><span class="pr">noah@dmv <b>~</b> %</span> whoami</span>
+          <span class="ln out">Noah Page — SOC &amp; detection engineer, DC Metro (DMV)</span>
+          <span class="ln out d">SIEM &middot; detection engineering &middot; threat hunting &middot; LLM red-teaming</span>
+          <span class="ln pr" style="margin-top:8px"><span class="pr">noah@dmv <b>~</b> %</span> cat ./now.txt</span>
+          <span class="ln out">Going deep on AI security: OWASP LLM Top 10, prompt-injection</span>
+          <span class="ln out">testing, and agent-security tooling. Open to work.</span>
+          <span class="ln pr" style="margin-top:8px"><span class="pr">noah@dmv <b>~</b> %</span> <span class="cursor"></span></span>
+        </div>
+      </div>
+
+      <div class="id">
+        <div class="id-top">
+          <img class="id-photo" src="https://avatars.githubusercontent.com/u/264541358?v=4" alt="Noah Page" />
+          <div class="who"><b>Noah Page</b><span>AI &amp; Security Engineer</span></div>
+        </div>
+        <div class="id-row"><span class="k">location</span><span class="v">DC Metro / DMV</span></div>
+        <div class="id-row"><span class="k">focus</span><span class="v">Detection &amp; AI Security</span></div>
+        <div class="id-row"><span class="k">public_repos</span><span class="v">24+</span></div>
+        <div class="id-row"><span class="k">status</span><span class="v ok">open_to_work</span></div>
       </div>
     </div>
-    <div class="avatar-card">
-      <div class="ring"><img src="https://avatars.githubusercontent.com/u/264541358?v=4" alt="Noah Page" /></div>
-      <h3>Noah Page</h3>
-      <div class="role">AI &amp; Security Engineer</div>
-      <div class="chips">
-        <div class="chip"><span>Location</span><span>DC Metro (DMV)</span></div>
-        <div class="chip"><span>Focus</span><span>Detection &amp; AI Security</span></div>
-        <div class="chip"><span>Public repos</span><span>24+</span></div>
-        <div class="chip"><span>Status</span><span style="color:var(--accent)">Open to work</span></div>
-      </div>
+
+    <div class="metrics reveal">
+      <div class="metric"><b>24+</b><span>public repos shipped</span></div>
+      <div class="metric"><b>10+</b><span>SOC &amp; detection labs</span></div>
+      <div class="metric"><b>12/12</b><span>OWASP LLM Top 10 tests</span></div>
+      <div class="metric"><b>5+</b><span>languages in rotation</span></div>
     </div>
   </div>
 </header>
 
-<section id="stats" class="reveal">
-  <div class="wrap stats">
-    <div class="stat"><div class="num">24+</div><div class="lbl">Public projects shipped</div></div>
-    <div class="stat"><div class="num">10+</div><div class="lbl">SOC &amp; detection labs</div></div>
-    <div class="stat"><div class="num">OWASP</div><div class="lbl">LLM Top 10 red-teaming</div></div>
-    <div class="stat"><div class="num">5+</div><div class="lbl">Languages in the toolkit</div></div>
-  </div>
-</section>
-
-<section id="projects" class="reveal">
+<!-- ═══ work ═══ -->
+<section id="work" class="sec reveal">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-tag">Selected work</div>
-      <div class="sec-title">Projects</div>
-      <p class="sec-sub">Hands-on security engineering: detection-as-code, threat triage automation, cloud security, and LLM red-teaming. Everything below is public on GitHub.</p>
+      <span class="idx">§01</span><h2>work</h2><span class="rule"></span><span class="meta">ls -la ~/projects</span>
     </div>
-    <div class="filters" id="filters">
-      <div class="filter active" data-f="all">All</div>
-      <div class="filter" data-f="ai">AI Security</div>
-      <div class="filter" data-f="detection">Detection &amp; SOC</div>
-      <div class="filter" data-f="automation">Automation</div>
-      <div class="filter" data-f="cloud">Cloud</div>
-      <div class="filter" data-f="hunting">Threat Hunting</div>
+    <div class="filters">
+      <span class="lbl">grep&nbsp;→</span>
+      <span class="filter active" data-f="all">all</span>
+      <span class="filter" data-f="ai">ai-security</span>
+      <span class="filter" data-f="detection">detection</span>
+      <span class="filter" data-f="automation">automation</span>
+      <span class="filter" data-f="cloud">cloud</span>
+      <span class="filter" data-f="hunting">hunting</span>
     </div>
-    <div class="proj-grid" id="grid"></div>
-    <div style="text-align:center;margin-top:36px">
-      <a class="btn btn-ghost" href="https://github.com/NoahPageIT?tab=repositories" target="_blank" rel="noopener">See all repositories on GitHub</a>
-    </div>
+    <div class="listing" id="grid"></div>
+    <div class="listing-foot">// full source tree at <a href="https://github.com/NoahPageIT?tab=repositories" target="_blank" rel="noopener">github.com/NoahPageIT</a></div>
   </div>
 </section>
 
-<section id="skills" class="reveal">
+<!-- ═══ stack ═══ -->
+<section id="stack" class="sec reveal">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-tag">Toolkit</div>
-      <div class="sec-title">Skills &amp; stack</div>
+      <span class="idx">§02</span><h2>stack</h2><span class="rule"></span><span class="meta">cat ~/.toolkit</span>
     </div>
-    <div class="skill-grid">
-      <div class="skill-cat">
-        <h4><span class="ic">&#128737;</span> Detection &amp; SOC</h4>
-        <div class="tags">
-          <span class="tag">Splunk</span><span class="tag">Sigma</span><span class="tag">MITRE ATT&amp;CK</span>
-          <span class="tag">Sentinel / KQL</span><span class="tag">SIEM</span><span class="tag">Windows Event Logs</span>
-          <span class="tag">Detection-as-Code</span><span class="tag">Wireshark</span>
-        </div>
+    <div class="cfg">
+      <div class="cfg-block">
+        <h4>detection_&amp;_soc</h4>
+        <div class="kv"><span>Splunk</span><span>Sigma</span><span>MITRE ATT&amp;CK</span><span>Sentinel/KQL</span><span>SIEM</span><span>Windows Event Logs</span><span>Detection-as-Code</span><span>Wireshark</span></div>
       </div>
-      <div class="skill-cat">
-        <h4><span class="ic">&#129302;</span> AI Security</h4>
-        <div class="tags">
-          <span class="tag">OWASP LLM Top 10</span><span class="tag">LLM Red-Teaming</span>
-          <span class="tag">Prompt Injection</span><span class="tag">Ollama</span><span class="tag">RAG</span>
-          <span class="tag">Agent Security</span>
-        </div>
+      <div class="cfg-block">
+        <h4>ai_security</h4>
+        <div class="kv"><span>OWASP LLM Top 10</span><span>LLM Red-Teaming</span><span>Prompt Injection</span><span>Ollama</span><span>RAG</span><span>Agent Security</span></div>
       </div>
-      <div class="skill-cat">
-        <h4><span class="ic">&#9729;</span> Cloud &amp; IaC</h4>
-        <div class="tags">
-          <span class="tag">Azure</span><span class="tag">Bicep</span><span class="tag">Defender for Cloud</span>
-          <span class="tag">Security-as-Code</span><span class="tag">AZ-500 / SC-200</span>
-        </div>
+      <div class="cfg-block">
+        <h4>cloud_&amp;_iac</h4>
+        <div class="kv"><span>Azure</span><span>Bicep</span><span>Defender for Cloud</span><span>Security-as-Code</span><span>AZ-500 / SC-200</span></div>
       </div>
-      <div class="skill-cat">
-        <h4><span class="ic">&#128187;</span> Languages &amp; tooling</h4>
-        <div class="tags">
-          <span class="tag">Python</span><span class="tag">PowerShell</span><span class="tag">JavaScript</span>
-          <span class="tag">TypeScript</span><span class="tag">Bash</span><span class="tag">Git / CI</span><span class="tag">SQL</span>
-        </div>
+      <div class="cfg-block">
+        <h4>languages</h4>
+        <div class="kv"><span>Python</span><span>PowerShell</span><span>JavaScript</span><span>TypeScript</span><span>Bash</span><span>Git / CI</span><span>SQL</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="models" class="reveal">
+<!-- ═══ models ═══ -->
+<section id="models" class="sec reveal">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-tag">AI systems</div>
-      <div class="sec-title">Models I work with</div>
-      <p class="sec-sub">Hands-on across frontier and open-weight models: building agents and tooling, integrating them into apps, and security-testing them against real attacks.</p>
+      <span class="idx">§03</span><h2>models</h2><span class="rule"></span><span class="meta">hands-on, not buzzwords</span>
     </div>
-    <div class="model-grid">
-      <div class="model-card">
-        <div class="mhead"><div class="mlogo">C</div><div class="prov">Claude</div></div>
-        <div class="mdls">Sonnet &middot; Opus &middot; Haiku</div>
-        <p>Primary model for building agents, security tooling, and automation workflows.</p>
-        <span class="role">Built with</span>
-      </div>
-      <div class="model-card">
-        <div class="mhead"><div class="mlogo">G</div><div class="prov">GPT</div></div>
-        <div class="mdls">OpenAI GPT-4 class</div>
-        <p>Integrated and comparatively evaluated; also a red-team target inside Aegis.</p>
-        <span class="role">Evaluated &amp; red-teamed</span>
-      </div>
-      <div class="model-card">
-        <div class="mhead"><div class="mlogo">O</div><div class="prov">Open-weight</div></div>
-        <div class="mdls">Llama &middot; Mistral (Ollama)</div>
-        <p>Run locally via Ollama for private, offline agent and RAG workflows.</p>
-        <span class="role">Deployed locally</span>
-      </div>
-      <div class="model-card">
-        <div class="mhead"><div class="mlogo">E</div><div class="prov">Embeddings</div></div>
-        <div class="mdls">transformers.js</div>
-        <p>Sentence-transformer embeddings powering semantic search over my knowledge base.</p>
-        <span class="role">Deployed in RAG</span>
+    <div class="mtable">
+      <div class="mrow"><div class="mp">Claude<small>sonnet · opus · haiku</small></div><div class="md">Primary model for building agents, security tooling, and automation workflows.</div><div class="mt">built with</div></div>
+      <div class="mrow"><div class="mp">GPT<small>openai gpt-4 class</small></div><div class="md">Integrated and comparatively evaluated; a red-team target inside Aegis.</div><div class="mt">evaluated · red-teamed</div></div>
+      <div class="mrow"><div class="mp">Open-weight<small>llama · mistral (ollama)</small></div><div class="md">Run locally via Ollama for private, offline agent and RAG workflows.</div><div class="mt">deployed locally</div></div>
+      <div class="mrow"><div class="mp">Embeddings<small>transformers.js</small></div><div class="md">Sentence-transformer embeddings powering semantic search over my knowledge base.</div><div class="mt">deployed in RAG</div></div>
+    </div>
+
+    <div class="proof">
+      <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span>aegis — live LLM red-team // real output</span></div>
+      <div class="proof-body">
+        <div class="cmd">noah@dmv <b>~/aegis</b> % node cli.js ollama llama3.2:3b</div>
+        <div class="l"><span>[LLM01] direct prompt injection</span><span class="t">·····</span><span class="fail">FAIL</span></div>
+        <div class="l"><span>[LLM01] jailbreak via role-play (DAN)</span><span class="t">·····</span><span class="fail">FAIL</span></div>
+        <div class="l"><span>[LLM04] training-data extraction probe</span><span class="t">·····</span><span class="fail">FAIL</span></div>
+        <div class="l"><span>[LLM02/03/05/06/07/08/09/10] &nbsp;9 tests</span><span class="t">·····</span><span class="pass">PASS</span></div>
+        <div class="l score"><span>security score</span><span><b>76 / 100</b> &nbsp;·&nbsp; 3 vulnerable / 12 tests</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="contact" class="reveal">
+<!-- ═══ contact ═══ -->
+<section id="contact" class="sec reveal">
   <div class="wrap">
-    <div class="contact-card">
-      <h2>Let's build something secure.</h2>
-      <p>Open to security engineering roles, AI security work, and collaboration. The fastest way to reach me is email.</p>
-      <div class="contact-row">
-        <a class="btn btn-primary" href="mailto:npage.it@gmail.com">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 6l8 6 8-6"/></svg>
-          npage.it@gmail.com
-        </a>
-        <a class="btn btn-ghost" href="https://github.com/NoahPageIT" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn btn-ghost" href="https://www.linkedin.com/in/noahrpage/" target="_blank" rel="noopener">LinkedIn</a>
+    <div class="sec-head">
+      <span class="idx">§04</span><h2>contact</h2><span class="rule"></span><span class="meta">./reach-out</span>
+    </div>
+    <div class="contact">
+      <div class="cmd">noah@dmv <b>~</b> % ./contact --open-to "security eng · AI security · collaboration"</div>
+      <div class="clist">
+        <a href="mailto:npage.it@gmail.com"><span class="ck">email</span><span class="cv">npage.it@gmail.com</span><span class="cgo">→</span></a>
+        <a href="https://github.com/NoahPageIT" target="_blank" rel="noopener"><span class="ck">github</span><span class="cv">github.com/NoahPageIT</span><span class="cgo">→</span></a>
+        <a href="https://www.linkedin.com/in/noahrpage/" target="_blank" rel="noopener"><span class="ck">linkedin</span><span class="cv">linkedin.com/in/noahrpage</span><span class="cgo">→</span></a>
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap foot-inner">
-    <div>&copy; <span id="yr"></span> Noah Page. Built and deployed from scratch.</div>
-    <div><a href="https://github.com/NoahPageIT" target="_blank" rel="noopener">github.com/NoahPageIT</a></div>
+  <div class="status">
+    <span><span class="mode">NORMAL</span> &nbsp;noahpageit.github.io</span>
+    <span>© <span id="yr"></span> Noah Page &nbsp;·&nbsp; hand-built, no template &nbsp;·&nbsp; <a href="https://github.com/NoahPageIT" target="_blank" rel="noopener">git:(main)</a></span>
   </div>
 </footer>
 
 <script>
   const projects = [
-    {name:"Aegis", cat:["ai"], lang:"JavaScript", color:"#f1e05a", flagship:true,
-     desc:"LLM Security Test Harness that red-teams LLM applications against the OWASP LLM Top 10. My flagship AI security project.",
+    {name:"aegis", cat:["ai"], lang:"JavaScript", color:"#f1e05a", flag:"FLAGSHIP",
+     desc:"LLM security test harness that red-teams LLM apps against the OWASP LLM Top 10. My flagship AI-security project.",
      url:"https://github.com/NoahPageIT/aegis"},
-    {name:"Argus SIEM", cat:["detection"], lang:"JavaScript", color:"#f1e05a",
+    {name:"argus-siem", cat:["detection"], lang:"JavaScript", color:"#f1e05a",
      desc:"SOC-analyst SIEM for Windows log monitoring, mapping activity to MITRE ATT&CK with a live detection dashboard.",
      url:"https://github.com/NoahPageIT/argus-siem"},
-    {name:"Azure Security Lab", cat:["cloud"], lang:"Bicep", color:"#519aba",
-     desc:"Security-as-code Azure lab: hardened Bicep IaC plus Defender for Cloud and Sentinel KQL detections. AZ-500 / SC-200 aligned.",
+    {name:"azure-security-lab", cat:["cloud"], lang:"Bicep", color:"#519aba",
+     desc:"Security-as-code lab: hardened Bicep IaC + Defender for Cloud + Sentinel KQL detections. AZ-500 / SC-200 aligned.",
      url:"https://github.com/NoahPageIT/azure-security-lab"},
-    {name:"Purple Team Lab", cat:["detection"], lang:"PowerShell", color:"#012456",
-     desc:"Safe ATT&CK technique emulation on Windows paired with the Sigma/Splunk detections that catch them. Attack, detect, verify.",
+    {name:"purple-team-lab", cat:["detection"], lang:"PowerShell", color:"#012456",
+     desc:"Safe ATT&CK technique emulation on Windows paired with the Sigma/Splunk detections that catch them.",
      url:"https://github.com/NoahPageIT/purple-team-lab"},
-    {name:"Sigma Detections", cat:["detection"], lang:"Python", color:"#3572A5",
-     desc:"Detection-as-code: Sigma rules for Windows Security events mapped to MITRE ATT&CK, validated in CI. Converts to Splunk / Sentinel.",
+    {name:"sigma-detections", cat:["detection"], lang:"Python", color:"#3572A5",
+     desc:"Detection-as-code: Sigma rules for Windows events mapped to MITRE ATT&CK, validated in CI. Converts to Splunk / Sentinel.",
      url:"https://github.com/NoahPageIT/sigma-detections"},
-    {name:"Threat Triage", cat:["automation"], lang:"Python", color:"#3572A5",
-     desc:"Automated IOC enrichment and alert triage for SOC analysts. Multi-source threat intel and risk scoring, zero dependencies.",
+    {name:"threat-triage", cat:["automation"], lang:"Python", color:"#3572A5",
+     desc:"Automated IOC enrichment and alert triage for SOC analysts. Multi-source threat intel + risk scoring, zero deps.",
      url:"https://github.com/NoahPageIT/threat-triage"},
-    {name:"Splunk SOC Lab", cat:["detection"], lang:"Splunk", color:"#65a637",
-     desc:"Splunk monitoring lab with Windows Security log detections (MITRE ATT&CK) and a SOC overview dashboard. Companion to Argus SIEM.",
+    {name:"splunk-soc-lab", cat:["detection"], lang:"Splunk", color:"#65a637",
+     desc:"Splunk monitoring lab: Windows Security log detections (MITRE ATT&CK) + a SOC overview dashboard.",
      url:"https://github.com/NoahPageIT/splunk-soc-lab"},
-    {name:"Threat Hunt Reports", cat:["hunting"], lang:"HTML", color:"#e34c26",
-     desc:"Threat hunt reports and writeups from the LOG(N) Pacific Cyber Range. Real hunts, documented end to end.",
+    {name:"threat-hunt-reports", cat:["hunting"], lang:"HTML", color:"#e34c26",
+     desc:"Threat-hunt reports and writeups from the LOG(N) Pacific Cyber Range. Real hunts, documented end to end.",
      url:"https://github.com/NoahPageIT/threat-hunt-reports"},
-    {name:"Phish Triage", cat:["automation"], lang:"Python", color:"#3572A5",
-     desc:"Phishing email triage automation: header analysis, IOC extraction, and verdict scoring to speed up analyst response.",
+    {name:"phish-triage", cat:["automation"], lang:"Python", color:"#3572A5",
+     desc:"Phishing email triage: header analysis, IOC extraction, and verdict scoring to speed up analyst response.",
      url:"https://github.com/NoahPageIT/phish-triage"},
-    {name:"Net Triage", cat:["automation"], lang:"Python", color:"#3572A5",
+    {name:"net-triage", cat:["automation"], lang:"Python", color:"#3572A5",
      desc:"Network artifact triage tooling for rapid investigation of suspicious connections and traffic patterns.",
      url:"https://github.com/NoahPageIT/net-triage"},
-    {name:"Vulnerability Management", cat:["hunting"], lang:"Docs", color:"#8b98a9",
-     desc:"An end-to-end vulnerability management program: scanning, prioritization, and programmatic remediation workflows.",
+    {name:"vuln-management", cat:["hunting"], lang:"Docs", color:"#8b98a9",
+     desc:"End-to-end vulnerability management program: scanning, prioritization, and programmatic remediation workflows.",
      url:"https://github.com/NoahPageIT/Vulnerability-Management-Program"},
-    {name:"BEC Investigation", cat:["hunting"], lang:"Docs", color:"#8b98a9",
-     desc:"Business email compromise investigation case study: scattered invoice fraud traced through logs and evidence.",
+    {name:"bec-investigation", cat:["hunting"], lang:"Docs", color:"#8b98a9",
+     desc:"Business email compromise case study: scattered-invoice fraud traced through logs and evidence.",
      url:"https://github.com/NoahPageIT/Scattered-Invoice-BEC-Investigation"}
   ];
 
@@ -459,22 +428,16 @@
   function render(filter){
     grid.innerHTML = '';
     projects.filter(p => filter==='all' || p.cat.includes(filter)).forEach(p => {
-      const el = document.createElement('div');
-      el.className = 'card' + (p.flagship ? ' flagship' : '');
-      el.innerHTML = `
-        <div class="card-top">
-          <div class="lang"><span class="ldot" style="background:${p.color}"></span>${p.lang}</div>
-          ${p.flagship ? '<span class="badge-star">&#9733; Flagship</span>' : ''}
-        </div>
-        <h3>${p.name}</h3>
-        <p>${p.desc}</p>
-        <div class="card-links">
-          <a href="${p.url}" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
-            View code
-          </a>
-        </div>`;
-      grid.appendChild(el);
+      const a = document.createElement('a');
+      a.className = 'row';
+      a.href = p.url; a.target = '_blank'; a.rel = 'noopener';
+      a.innerHTML = `
+        <span class="r-flag">${p.flag ? '<span class="fl">'+p.flag+'</span>' : '<span class="dr">drwxr-xr-x</span>'}</span>
+        <span class="r-name">${p.name}</span>
+        <span class="r-desc">${p.desc}</span>
+        <span class="r-lang"><i style="background:${p.color}"></i>${p.lang}</span>
+        <span class="r-go">→</span>`;
+      grid.appendChild(a);
     });
   }
   render('all');
@@ -487,11 +450,14 @@
     });
   });
 
+  // stagger the hero terminal lines
+  document.querySelectorAll('.type .ln').forEach((el,i) => { el.style.animationDelay = (0.15 + i*0.12) + 's'; });
+
   document.getElementById('yr').textContent = new Date().getFullYear();
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, {threshold:.12});
+  const io = new IntersectionObserver((e) => {
+    e.forEach(x => { if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
+  }, {threshold:.1});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 </body>
