@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0b0a08;--panel-2:#161310;--line:#272219;--line-2:#3b342a;
+    --ink:#ece5d6;--ink-dim:#9a9080;--dim:#6a6255;--amber:#f2a52c;--green:#9ac862;--blue:#77b0cf;
+    --mono:'IBM Plex Mono',monospace;--disp:'Space Grotesk',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1584px;height:396px;overflow:hidden}
+  body{background:var(--bg);color:var(--ink);font-family:var(--mono);position:relative;
+    display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .grid{position:absolute;inset:0;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:52px 52px;opacity:.45;mask-image:radial-gradient(ellipse 70% 120% at 50% 50%,#000,transparent 78%)}
+  .scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.2) 3px,transparent 4px);opacity:.4}
+  .glowL{position:absolute;top:-120px;left:-80px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(119,176,207,.10),transparent 62%);filter:blur(14px)}
+  .glowR{position:absolute;bottom:-160px;right:-60px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(242,165,44,.14),transparent 62%);filter:blur(14px)}
+
+  /* top-right site tag */
+  .site{position:absolute;top:26px;right:34px;display:flex;align-items:center;gap:9px;font-size:16px;color:var(--ink-dim)}
+  .site .led{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  .site b{color:var(--ink);font-weight:500}
+  /* top-left prompt (decorative, sits above where profile pic overlaps) */
+  .tl{position:absolute;top:26px;left:34px;font-size:16px;color:var(--dim)}
+  .tl .p{color:var(--green)}.tl .p b{color:var(--blue);font-weight:400}
+
+  .mid{text-align:center;position:relative;z-index:2;padding:0 40px}
+  .kick{font-size:17px;letter-spacing:.34em;color:var(--amber);text-transform:uppercase;font-weight:500}
+  h1{font-family:var(--disp);font-weight:700;font-size:88px;line-height:1;letter-spacing:-.01em;margin:14px 0 0}
+  .uline{width:196px;height:3px;background:var(--amber);margin:14px auto 20px;box-shadow:0 0 12px rgba(242,165,44,.5)}
+  .spec{font-size:22px;letter-spacing:.14em;color:var(--ink);text-transform:uppercase;font-weight:500}
+  .spec b{color:var(--amber);font-weight:600}
+  .tools{font-size:18px;color:var(--ink-dim);margin-top:12px;letter-spacing:.02em}
+  .tools .dot{color:var(--dim);margin:0 8px}
+
+  .footline{position:absolute;bottom:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--amber),rgba(242,165,44,0) 60%)}
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glowL"></div>
+  <div class="glowR"></div>
+  <div class="scan"></div>
+
+  <div class="tl"><span class="p">noah@dmv <b>~</b> %</span> whoami</div>
+  <div class="site"><span class="led"></span><b>noahpageit.github.io</b></div>
+
+  <div class="mid">
+    <div class="kick">Security Operations &times; AI</div>
+    <h1>NOAH&nbsp;PAGE</h1>
+    <div class="uline"></div>
+    <div class="spec">Security Operations &middot; Detection Engineering &middot; <b>AI Security</b></div>
+    <div class="tools">Microsoft Sentinel <span class="dot">&middot;</span> Defender <span class="dot">&middot;</span> Tenable <span class="dot">&middot;</span> Azure <span class="dot">&middot;</span> OWASP LLM Top 10</div>
+  </div>
+
+  <div class="footline"></div>
+</body>
+</html>

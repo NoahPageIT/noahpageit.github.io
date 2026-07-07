@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0b0a08;--panel:#100e0b;--panel-2:#161310;--line:#272219;--line-2:#3b342a;
+    --ink:#ece5d6;--ink-dim:#9a9080;--dim:#6a6255;--amber:#f2a52c;--green:#9ac862;--blue:#77b0cf;--red:#e6605f;
+    --mono:'IBM Plex Mono',monospace;--disp:'Space Grotesk',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:627px;overflow:hidden}
+  body{background:var(--bg);color:var(--ink);font-family:var(--mono);position:relative}
+  /* faint grid + scanlines */
+  .grid{position:absolute;inset:0;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:48px 48px;opacity:.4;mask-image:radial-gradient(ellipse 90% 80% at 30% 30%,#000,transparent 80%)}
+  .scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.22) 3px,transparent 4px);opacity:.4}
+  .glow{position:absolute;top:-160px;right:-120px;width:620px;height:620px;border-radius:50%;
+    background:radial-gradient(circle,rgba(242,165,44,.16),transparent 62%);filter:blur(12px)}
+
+  .win{position:absolute;inset:34px;border:1px solid var(--line-2);background:rgba(16,14,11,.72);display:flex;flex-direction:column}
+  .titlebar{height:44px;display:flex;align-items:center;gap:16px;padding:0 20px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+  .dots{display:flex;gap:8px}
+  .dots i{width:13px;height:13px;border-radius:50%}
+  .dots i:nth-child(1){background:#e6605f}.dots i:nth-child(2){background:#f2a52c}.dots i:nth-child(3){background:#9ac862}
+  .titlebar span{font-size:15px;color:var(--dim)}
+
+  .body{flex:1;display:flex;padding:44px 48px}
+  .main{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .kick{font-size:18px;letter-spacing:.22em;color:var(--amber);text-transform:uppercase;font-weight:500}
+  h1{font-family:var(--disp);font-weight:700;font-size:118px;line-height:.9;letter-spacing:-.01em;margin:18px 0 14px}
+  .role{font-size:26px;color:var(--ink-dim);font-weight:500}
+  .role b{color:var(--ink);font-weight:600}
+  .prompt{margin-top:30px;font-size:22px}
+  .prompt .p{color:var(--green)} .prompt .p b{color:var(--blue);font-weight:400}
+  .prompt .o{color:var(--ink)}
+  .cur{display:inline-block;width:13px;height:24px;background:var(--amber);vertical-align:-3px;margin-left:3px}
+  .tags{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
+  .tags span{font-size:17px;color:var(--ink-dim);border:1px solid var(--line-2);padding:8px 15px}
+  .tags span b{color:var(--amber);font-weight:400}
+
+  .side{width:300px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:22px;border-left:1px solid var(--line);padding-left:44px;margin-left:20px}
+  .photo{width:150px;height:150px;object-fit:cover;border:2px solid var(--amber);filter:grayscale(.2) contrast(1.05);position:relative}
+  .badge{width:100%;border:1px solid var(--line-2);background:var(--panel)}
+  .badge .r{display:flex;justify-content:space-between;font-size:15px;padding:9px 14px;border-top:1px dashed var(--line)}
+  .badge .r:first-child{border-top:none}
+  .badge .k{color:var(--dim)} .badge .v{color:var(--ink)} .badge .v.ok{color:var(--green)}
+
+  .foot{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-top:1px solid var(--line);background:var(--panel-2);font-size:17px}
+  .foot .l{display:flex;align-items:center;gap:11px;color:var(--ink)}
+  .foot .l .m{background:var(--amber);color:var(--bg);font-weight:700;padding:2px 12px;letter-spacing:.05em;font-size:15px}
+  .foot .r{display:flex;align-items:center;gap:10px;color:var(--ink-dim)}
+  .foot .r .led{width:11px;height:11px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="scan"></div>
+  <div class="win">
+    <div class="titlebar"><span class="dots"><i></i><i></i><i></i></span><span>noah@dmv: ~ — portfolio</span></div>
+    <div class="body">
+      <div class="main">
+        <div class="kick">Security Operations × AI</div>
+        <h1>NOAH&nbsp;PAGE</h1>
+        <div class="role">SOC &amp; Detection Engineer <b>//</b> AI Security</div>
+        <div class="prompt"><span class="p">noah@dmv <b>~</b> %</span> <span class="o">whoami</span><span class="cur"></span></div>
+        <div class="tags">
+          <span>Detection-as-Code</span>
+          <span>Threat Triage <b>Automation</b></span>
+          <span>LLM Red-Teaming</span>
+          <span>OWASP LLM Top 10</span>
+        </div>
+      </div>
+      <div class="side">
+        <img class="photo" src="https://avatars.githubusercontent.com/u/264541358?v=4" alt="Noah Page" />
+        <div class="badge">
+          <div class="r"><span class="k">location</span><span class="v">DC Metro</span></div>
+          <div class="r"><span class="k">focus</span><span class="v">AI Security</span></div>
+          <div class="r"><span class="k">status</span><span class="v ok">open_to_work</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <div class="l"><span class="m">NORMAL</span> <span>noahpageit.github.io</span></div>
+      <div class="r"><span class="led"></span> hand-built · no template</div>
+    </div>
+  </div>
+</body>
+</html>
